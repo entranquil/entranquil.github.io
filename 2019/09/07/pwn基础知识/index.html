@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="pwntoolsprocess &amp;amp; remote123p = process(binary.path)r=remote(&apos;google.com&apos;, 80)  context1234exe = context.binary = ELF(&apos;./challenge-binary&apos;) #方便与asm()函数连用，找shellcodecontext.log_level=&apos;debug&apos; #所有交互的数">
+<meta name="keywords" content="pwn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pwn基础知识，持续更新">
+<meta property="og:url" content="http://yoursite.com/2019/09/07/pwn基础知识/index.html">
+<meta property="og:site_name" content="今日事，今日毕。">
+<meta property="og:description" content="pwntoolsprocess &amp;amp; remote123p = process(binary.path)r=remote(&apos;google.com&apos;, 80)  context1234exe = context.binary = ELF(&apos;./challenge-binary&apos;) #方便与asm()函数连用，找shellcodecontext.log_level=&apos;debug&apos; #所有交互的数">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-09-11T04:30:16.309Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="pwn基础知识，持续更新">
+<meta name="twitter:description" content="pwntoolsprocess &amp;amp; remote123p = process(binary.path)r=remote(&apos;google.com&apos;, 80)  context1234exe = context.binary = ELF(&apos;./challenge-binary&apos;) #方便与asm()函数连用，找shellcodecontext.log_level=&apos;debug&apos; #所有交互的数">
+  <link rel="alternate" href="/atom.xml" title="今日事，今日毕。" type="application/atom+xml">
+  <link rel="canonical" href="http://yoursite.com/2019/09/07/pwn基础知识/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>pwn基础知识，持续更新 | 今日事，今日毕。</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">今日事，今日毕。</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/07/pwn基础知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="entranquil">
+      <meta itemprop="description" content="From zero to zero day.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今日事，今日毕。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">pwn基础知识，持续更新
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-09-07 10:58:53" itemprop="dateCreated datePublished" datetime="2019-09-07T10:58:53+08:00">2019-09-07</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-09-11 12:30:16" itemprop="dateModified" datetime="2019-09-11T12:30:16+08:00">2019-09-11</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/pwn/" itemprop="url" rel="index"><span itemprop="name">pwn</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2019/09/07/pwn基础知识/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/09/07/pwn基础知识/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span>3.3k</span>
+            </span>
+          
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span>3 mins.</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h1><h2 id="process-amp-remote"><a href="#process-amp-remote" class="headerlink" title="process &amp; remote"></a>process &amp; remote</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p = process(binary.path)</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">'google.com'</span>, <span class="number">80</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="context"><a href="#context" class="headerlink" title="context"></a>context</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">exe = context.binary = ELF(<span class="string">'./challenge-binary'</span>) <span class="comment">#方便与asm()函数连用，找shellcode</span></span><br><span class="line"></span><br><span class="line">context.log_level=<span class="string">'debug'</span> <span class="comment">#所有交互的数据以十六进制显示</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="send、sendline、recv、recvutil、recvrepeate、recvline"><a href="#send、sendline、recv、recvutil、recvrepeate、recvline" class="headerlink" title="send、sendline、recv、recvutil、recvrepeate、recvline"></a>send、sendline、recv、recvutil、recvrepeate、recvline</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">p.send()</span><br><span class="line"></span><br><span class="line">p.sendline(<span class="string">'111'</span>) <span class="comment">#发送数据，并在最后加上\n</span></span><br><span class="line"></span><br><span class="line">p.recv(numb=<span class="number">4096</span>, timeout=default)</span><br><span class="line"></span><br><span class="line">recvrepeat(timeout=default) <span class="comment">#接收到EOF或timeout</span></span><br><span class="line"></span><br><span class="line">p.recvutil(<span class="string">'abc'</span>) <span class="comment">#直到接收到abc</span></span><br><span class="line"></span><br><span class="line">p.recvline() <span class="comment">#接收数据到换行</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ELF"><a href="#ELF" class="headerlink" title="ELF"></a>ELF</h2><p>方便查看信息，如got、plt表等</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; e = ELF(<span class="string">'/bin/cat'</span>)</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> hex(e.address) </span><br><span class="line">0x400000</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> hex(e.symbols[<span class="string">'write'</span>]) </span><br><span class="line">0x401680</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> hex(e.got[<span class="string">'write'</span>]) </span><br><span class="line">0x60b070</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> hex(e.plt[<span class="string">'write'</span>]) </span><br><span class="line">0x401680</span><br></pre></td></tr></table></figure>
+
+<h2 id="cyclic"><a href="#cyclic" class="headerlink" title="cyclic"></a>cyclic</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cyclic n    <span class="comment">#生成n个字符，默认32位(-c参数改动)，所以任意四个连续字符是独一无二的</span></span><br><span class="line"></span><br><span class="line">cyclinc -l 0x61616166   <span class="comment">#查找偏移</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="attach"><a href="#attach" class="headerlink" title="attach"></a>attach</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Attach directly to pid 1234</span></span><br><span class="line">gdb.attach(<span class="number">1234</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Attach to the youngest "bash" process</span></span><br><span class="line">gdb.attach(<span class="string">'bash'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Start a process</span></span><br><span class="line">bash = process(<span class="string">'bash'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Attach the debugger</span></span><br><span class="line">gdb.attach(bash, <span class="string">'''</span></span><br><span class="line"><span class="string">set follow-fork-mode child</span></span><br><span class="line"><span class="string">break execve</span></span><br><span class="line"><span class="string">continue</span></span><br><span class="line"><span class="string">'''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Interact with the process</span></span><br><span class="line">bash.sendline(<span class="string">'whoami'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Start a forking server</span></span><br><span class="line">server = process([<span class="string">'socat'</span>, <span class="string">'tcp-listen:1234,fork,reuseaddr'</span>, <span class="string">'exec:/bin/sh'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Connect to the server</span></span><br><span class="line">io = remote(<span class="string">'localhost'</span>, <span class="number">1234</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Connect the debugger to the server-spawned process</span></span><br><span class="line">gdb.attach(io, <span class="string">'''</span></span><br><span class="line"><span class="string">break exit</span></span><br><span class="line"><span class="string">continue</span></span><br><span class="line"><span class="string">'''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Talk to the spawned 'sh'</span></span><br><span class="line">io.sendline(<span class="string">'exit'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Connect to the SSH server</span></span><br><span class="line">shell = ssh(<span class="string">'bandit0'</span>, <span class="string">'bandit.labs.overthewire.org'</span>, password=<span class="string">'bandit0'</span>, port=<span class="number">2220</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Start a process on the server</span></span><br><span class="line">cat = shell.process([<span class="string">'cat'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Attach a debugger to it</span></span><br><span class="line">gdb.attach(cat, <span class="string">'''</span></span><br><span class="line"><span class="string">break exit</span></span><br><span class="line"><span class="string">continue</span></span><br><span class="line"><span class="string">'''</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Cause `cat` to exit</span></span><br><span class="line">cat.close()</span><br></pre></td></tr></table></figure>
+
+<h2 id="pwn-template"><a href="#pwn-template" class="headerlink" title="pwn template"></a>pwn template</h2><p>生成exp的模板</p>
+<p><a href="http://docs.pwntools.com" target="_blank" rel="noopener">参考链接</a></p>
+<h1 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h1><h2 id="通用"><a href="#通用" class="headerlink" title="通用"></a>通用</h2><h3 id="x"><a href="#x" class="headerlink" title="x"></a>x</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x/20wx 0x4005fe</span><br></pre></td></tr></table></figure>
+
+<p>查看address的内容，20为个数(数字可省略)，w为四字节，可改为b/h/g（1/2/8字节），第二个x代表十六进制,可改为u/d/s/i(unsigned int/10进制/字符串/指令)，空格后门是地址</p>
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> *address = value <span class="comment">#将address的值设置成value，一次设置4 byte</span></span><br></pre></td></tr></table></figure>
+
+<p>*可以替换成{char/short/long},分别设定1/2/8 byte；也可以给寄存器设值</p>
+<p>e.g.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> &#123;int&#125;0x0804a060 = 1337</span><br></pre></td></tr></table></figure>
+
+<h2 id="peda"><a href="#peda" class="headerlink" title="peda"></a>peda</h2><ul>
+<li>elfsymbol<ul>
+<li>查看function .plt表  </li>
+<li>ROP需要</li>
+</ul>
+</li>
+<li>vvmap<ul>
+<li>查看process mapping</li>
+<li>虚拟内存的权限，r=读，w=写,x=执行,s=共享,p=私有</li>
+</ul>
+</li>
+<li>readelf<ul>
+<li>查看session位置</li>
+<li>ret2dl_resolve需要</li>
+</ul>
+</li>
+<li>find<ul>
+<li>search memory里的pattern<ul>
+<li>通常用来找字符串 e.g. find /bin/sh</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>record</li>
+</ul>
+<h1 id="ROP"><a href="#ROP" class="headerlink" title="ROP"></a>ROP</h1><h2 id="rp"><a href="#rp" class="headerlink" title="rp++"></a>rp++</h2><h2 id="ROPgadget"><a href="#ROPgadget" class="headerlink" title="ROPgadget"></a>ROPgadget</h2><p>–ropchain 仅适用于静态链接</p>
+<h2 id="pwntools-rop模块"><a href="#pwntools-rop模块" class="headerlink" title="pwntools rop模块"></a>pwntools rop模块</h2><p>代码片段</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">bss_addr = </span><br><span class="line">proc= <span class="string">'./binary'</span></span><br><span class="line">context.binary = proc</span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line"></span><br><span class="line">p = process(proc)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line">rop = ROP(proc)</span><br><span class="line">rop.read(<span class="number">0</span>,bss_addr+<span class="number">0x100</span>,len(shellcode))</span><br><span class="line">rop.call(bss_addr + <span class="number">0x100</span>)</span><br><span class="line"></span><br><span class="line">p.sed(<span class="string">'a'</span>*<span class="number">20</span> + str(rop))</span><br><span class="line">time.sleep(<span class="number">1</span>)</span><br><span class="line">p.send(shellcode)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><ul>
+<li>read、write函数的文件描述符：标准输入（standard input）是 0，标准输出（standard output）是 1，标准错误（standard error）是 2</li>
+</ul>
+<h1 id="查看libc版本"><a href="#查看libc版本" class="headerlink" title="查看libc版本"></a>查看libc版本</h1><h2 id="远程"><a href="#远程" class="headerlink" title="远程"></a>远程</h2><ul>
+<li><p>libcdb.com  </p>
+</li>
+<li><p>Libc-database(github上的一个项目，没有前面网址全)</p>
+</li>
+</ul>
+<h2 id="本地"><a href="#本地" class="headerlink" title="本地"></a>本地</h2><ul>
+<li>ldd binary 可以看到binary使用的libc库文件</li>
+</ul>
+<h1 id="objdump"><a href="#objdump" class="headerlink" title="objdump"></a>objdump</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -R binary</span><br></pre></td></tr></table></figure>
+
+<p>查看binary符号表的信息</p>
+<h1 id="Segment"><a href="#Segment" class="headerlink" title="Segment"></a>Segment</h1><p>在程序执行时才有的概念，基本会根据读写执行权限及特性分为数个segmnet,e.g. rodata、data、code、stack、heap等</p>
+<ul>
+<li>data：rw-</li>
+<li>code：r-x</li>
+<li>stack：rw-</li>
+<li>heap：rw-</li>
+</ul>
+<h1 id="x86-assembly"><a href="#x86-assembly" class="headerlink" title="x86 assembly"></a>x86 assembly</h1><h2 id="lea-amp-mov"><a href="#lea-amp-mov" class="headerlink" title="lea &amp; mov"></a>lea &amp; mov</h2><p>e.g.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lea/mov eax,[eax + 4]</span><br><span class="line"></span><br><span class="line">eax = 3</span><br><span class="line">esp + 4 = 0xbfff7488</span><br><span class="line">[esp + 4] = 0xdeadbeef</span><br><span class="line"></span><br><span class="line">lea: eax = 0xbfff7488</span><br><span class="line">mov: eax = 0xdeadbeef</span><br></pre></td></tr></table></figure>
+
+<h2 id="leave"><a href="#leave" class="headerlink" title="leave"></a>leave</h2><p>mv ebp,esp<br>pop ebp</p>
+<h1 id="syscalls"><a href="#syscalls" class="headerlink" title="syscalls"></a><a href="https://www.w3challs.com/syscalls/" target="_blank" rel="noopener">syscalls</a></h1><p>int 0x80 即中断处理函数，用于处理 system_call</p>
+<ul>
+<li>操作系统实现系统调用的基本过程是<ol>
+<li>应用程序调用库函数（API）</li>
+<li>API将系统调用号存入EAX，然后通过中断调用使系统进入内核态</li>
+<li>内核中的中断处理函数根据系统调用号，调用对应的内核函数（系统调用）</li>
+<li>系统调用完成相应功能，将返回值存入EAX，返回到中断处理函数</li>
+<li>中断处理函数返回到API中</li>
+<li>API将EAX返回给应用程序</li>
+</ol>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/pwn/" rel="tag"># pwn</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/10/xman_wp/" rel="next" title="Xman WP">
+                  <i class="fa fa-chevron-left"></i> Xman WP
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/09/linux_x86_syscalls/" rel="prev" title="linux_x86_syscalls">
+                  linux_x86_syscalls <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pwntools"><span class="nav-number">1.</span> <span class="nav-text">pwntools</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#process-amp-remote"><span class="nav-number">1.1.</span> <span class="nav-text">process &amp; remote</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#context"><span class="nav-number">1.2.</span> <span class="nav-text">context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#send、sendline、recv、recvutil、recvrepeate、recvline"><span class="nav-number">1.3.</span> <span class="nav-text">send、sendline、recv、recvutil、recvrepeate、recvline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ELF"><span class="nav-number">1.4.</span> <span class="nav-text">ELF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cyclic"><span class="nav-number">1.5.</span> <span class="nav-text">cyclic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#attach"><span class="nav-number">1.6.</span> <span class="nav-text">attach</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwn-template"><span class="nav-number">1.7.</span> <span class="nav-text">pwn template</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GDB"><span class="nav-number">2.</span> <span class="nav-text">GDB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通用"><span class="nav-number">2.1.</span> <span class="nav-text">通用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#x"><span class="nav-number">2.1.1.</span> <span class="nav-text">x</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-number">2.1.2.</span> <span class="nav-text">set</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#peda"><span class="nav-number">2.2.</span> <span class="nav-text">peda</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ROP"><span class="nav-number">3.</span> <span class="nav-text">ROP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rp"><span class="nav-number">3.1.</span> <span class="nav-text">rp++</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ROPgadget"><span class="nav-number">3.2.</span> <span class="nav-text">ROPgadget</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pwntools-rop模块"><span class="nav-number">3.3.</span> <span class="nav-text">pwntools rop模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tips"><span class="nav-number">3.3.1.</span> <span class="nav-text">tips</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看libc版本"><span class="nav-number">4.</span> <span class="nav-text">查看libc版本</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#远程"><span class="nav-number">4.1.</span> <span class="nav-text">远程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地"><span class="nav-number">4.2.</span> <span class="nav-text">本地</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#objdump"><span class="nav-number">5.</span> <span class="nav-text">objdump</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Segment"><span class="nav-number">6.</span> <span class="nav-text">Segment</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#x86-assembly"><span class="nav-number">7.</span> <span class="nav-text">x86 assembly</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lea-amp-mov"><span class="nav-number">7.1.</span> <span class="nav-text">lea &amp; mov</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#leave"><span class="nav-number">7.2.</span> <span class="nav-text">leave</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#syscalls"><span class="nav-number">8.</span> <span class="nav-text">syscalls</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">entranquil</p>
+  <div class="site-description" itemprop="description">From zero to zero day.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.jagger2zr.com/" title="http://www.jagger2zr.com/" rel="noopener" target="_blank">jagger</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://lemonvegetablefish.github.io/" title="https://lemonvegetablefish.github.io/" rel="noopener" target="_blank">LVF</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://fitzbc.github.io/" title="https://fitzbc.github.io/" rel="noopener" target="_blank">fitzbc</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entranquil</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'zPBxoDHjfriy4FO43ysmpu4P-gzGzoHsz',
+    appKey: 'L1WzWXACrIrcyGj60A3Crnfj',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>

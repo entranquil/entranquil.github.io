@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.3.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.3.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.3.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.3.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.3.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Base64定义Base64 是一种基于64个可打印字符来表示二进制数据的表示方法。由于2^6=64，所以每6个比特为一个单元，对应某个可打印字符。3个字节有24个比特，对应于4个Base64单元，即3个字节可由4个可打印字符来表示。它可用来作为电子邮件的传输编码。在Base64中的可打印字符包括字母A-Z、a-z、数字0-9，这样共有62个字符，此外两个可打印符号在不同的系统中而不同。一些如uu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Base 系列">
+<meta property="og:url" content="http://yoursite.com/2019/08/03/Base系列/index.html">
+<meta property="og:site_name" content="今日事，今日毕。">
+<meta property="og:description" content="Base64定义Base64 是一种基于64个可打印字符来表示二进制数据的表示方法。由于2^6=64，所以每6个比特为一个单元，对应某个可打印字符。3个字节有24个比特，对应于4个Base64单元，即3个字节可由4个可打印字符来表示。它可用来作为电子邮件的传输编码。在Base64中的可打印字符包括字母A-Z、a-z、数字0-9，这样共有62个字符，此外两个可打印符号在不同的系统中而不同。一些如uu">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-08-04T11:17:05.011Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Base 系列">
+<meta name="twitter:description" content="Base64定义Base64 是一种基于64个可打印字符来表示二进制数据的表示方法。由于2^6=64，所以每6个比特为一个单元，对应某个可打印字符。3个字节有24个比特，对应于4个Base64单元，即3个字节可由4个可打印字符来表示。它可用来作为电子邮件的传输编码。在Base64中的可打印字符包括字母A-Z、a-z、数字0-9，这样共有62个字符，此外两个可打印符号在不同的系统中而不同。一些如uu">
+  <link rel="alternate" href="/atom.xml" title="今日事，今日毕。" type="application/atom+xml">
+  <link rel="canonical" href="http://yoursite.com/2019/08/03/Base系列/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Base 系列 | 今日事，今日毕。</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">今日事，今日毕。</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger">
+        
+          <i class="menu-item-icon fa fa-search fa-fw"></i> <br>Search</a>
+      </li>
+    
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="Searching..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/03/Base系列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="entranquil">
+      <meta itemprop="description" content="From zero to zero day.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="今日事，今日毕。">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Base 系列
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-08-03 22:40:57" itemprop="dateCreated datePublished" datetime="2019-08-03T22:40:57+08:00">2019-08-03</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-08-04 19:17:05" itemprop="dateModified" datetime="2019-08-04T19:17:05+08:00">2019-08-04</time>
+              </span>
+            
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2019/08/03/Base系列/#comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/2019/08/03/Base系列/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+          <br>
+            <span class="post-meta-item" title="Symbols count in article">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Symbols count in article: </span>
+              
+              <span>3.9k</span>
+            </span>
+          
+            <span class="post-meta-item" title="Reading time">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Reading time &asymp;</span>
+              
+              <span>4 mins.</span>
+            </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a>Base64</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>Base64 是一种基于64个可打印字符来表示二进制数据的表示方法。由于2^6=64，所以每6个比特为一个单元，对应某个可打印字符。3个字节有24个比特，对应于4个Base64单元，即3个字节可由4个可打印字符来表示。它可用来作为电子邮件的传输编码。在Base64中的可打印字符包括字母A-Z、a-z、数字0-9，这样共有62个字符，此外两个可打印符号在不同的系统中而不同。一些如uuencode的其他编码方法，和之后BinHex的版本使用不同的64字符集来代表6个二进制数字，但是不被称为Base64。</p>
+<p>Base64常用于在通常处理文本数据的场合，表示、传输、存储一些二进制数据，包括MIME的电子邮件及XML的一些复杂数据。</p>
+<p>在MIME格式的电子邮件中，Base64可以用来将binary的字节序列数据编码成ASCII字符序列构成的文本。使用时，在传输编码方式中指定Base64。使用的字符包括大小写拉丁字母各26个、数字10个、加号+和斜杠/，共64个字符，等号=用来作为后缀用途。</p>
+<h2 id="编码规则"><a href="#编码规则" class="headerlink" title="编码规则"></a>编码规则</h2><ol>
+<li>将每三个字节作为一组，一共是24个二进制位</li>
+<li>将这24个二进制位分为四组，每个组有6个二进制位</li>
+<li>在每组前面加两个00，扩展成32个二进制位，即四个字节</li>
+<li>根据<a href="https://i.loli.net/2018/09/07/5b9264fbaee7c.jpg" target="_blank" rel="noopener">对照表</a>，得到扩展后的每个字节的对应符号，这就是Base64的编码值</li>
+<li>如果要编码的字节数不能被3整除，最后会多出1个或2个字节，那么可以使用下面的方法进行处理：先使用0字节值在末尾补足，使其能够被3整除，然后再进行Base64的编码。在编码后的Base64文本后加上一个或两个=号，代表补足的字节数。也就是说，当最后剩余两个八位字节（2个byte）时，最后一个6位的Base64字节块有四位是0值，最后附加上两个等号；如果最后剩余一个八位字节（1个byte）时，最后一个6位的base字节块有两位是0值，最后附加一个等号。</li>
+</ol>
+<p>base64编码是用64（2的6次方）个ASCII字符来表示256（2的8次方）个ASCII字符，也就是三位二进制数组经过编码后变为四位的ASCII字符显示，长度比原来增加1/3。</p>
+<h1 id="Base32"><a href="#Base32" class="headerlink" title="Base32"></a>Base32</h1><h2 id="编码规则-1"><a href="#编码规则-1" class="headerlink" title="编码规则"></a>编码规则</h2><p>Base32这种数据编码机制，主要用来把二进制数据编码成可见的字符串，其编码规则是：任意给定一个二进制数据，以5个位(bit)为一组进行切分(base64以6个位(bit)为一组)，对切分而成的每个组进行编码得到1个可见字符。Base32编码表字符集中的字符总数为2^5=32个，这也是Base32名字的由来。A-Z、2-7</p>
+<p>base32就是用32（2的5次方）个特定ASCII码来表示256个ASCII码。所以，5个 ASCII 字符经过base32编码后会变为8个字符（公约数为40），长度增加3/5.不足8n用“=”补足。</p>
+<p>#Base16</p>
+<p>base16就是用16（2的4次方）个特定ASCII码表示256个ASCII字符。1个ASCII字符经过base16编码后会变为2个字符，长度增加一倍。不足2n用“=”补足。 0-9、 A-F。</p>
+<h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myBase64Encode</span><span class="params">(preCoding)</span> :</span></span><br><span class="line">        charTable = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'</span> <span class="comment">#字符表</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span> len(preCoding) &lt; <span class="number">0</span> :</span><br><span class="line"> </span><br><span class="line">                <span class="keyword">return</span> <span class="string">''</span>  <span class="comment">#字符串为空则返回空</span></span><br><span class="line"> </span><br><span class="line">        lackCharNums = <span class="number">3</span>-len(preCoding)%<span class="number">3</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span> lackCharNums == <span class="number">3</span> : lackCharNums = <span class="number">0</span> <span class="comment">#整除说明不缺字符</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment">#待转换字符不是3的倍数的情况补全它</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(lackCharNums) :</span><br><span class="line"> </span><br><span class="line">                preCoding = preCoding + <span class="string">b'\x00'</span></span><br><span class="line"> </span><br><span class="line">        result = <span class="string">''</span> <span class="comment">#用于保存最终结果的str数据</span></span><br><span class="line"> </span><br><span class="line">        rp = <span class="string">''</span> <span class="comment">#处理补全字符时的暂存变量</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment">#每三个字符处理一轮</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(len(preCoding)/<span class="number">3</span>)) :</span><br><span class="line"> </span><br><span class="line">                threeChar = preCoding[i*<span class="number">3</span>:i*<span class="number">3</span>+<span class="number">3</span>] <span class="comment">#取三个字符出来</span></span><br><span class="line"> </span><br><span class="line">                tCode = <span class="string">''</span> <span class="comment">#用于存放三个字符拼接后的二进制数值 文本形式</span></span><br><span class="line"> </span><br><span class="line">                pCode = <span class="string">''</span> <span class="comment">#暂存变量</span></span><br><span class="line"> </span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">3</span>) :</span><br><span class="line"> </span><br><span class="line">                        pCode = bin(threeChar[j])[<span class="number">2</span>:]  <span class="comment">#把省略的0补上</span></span><br><span class="line"> </span><br><span class="line">                        lackZeroNums = <span class="number">8</span>-len(pCode) <span class="comment">#省略的0的个数</span></span><br><span class="line"> </span><br><span class="line">                        <span class="keyword">for</span> x <span class="keyword">in</span> range(lackZeroNums) :</span><br><span class="line"> </span><br><span class="line">                                pCode = <span class="string">'0'</span>+pCode</span><br><span class="line"> </span><br><span class="line">                        tCode = tCode + pCode</span><br><span class="line"> </span><br><span class="line">                pCode = <span class="string">''</span></span><br><span class="line"> </span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">4</span>) : <span class="comment">#每6位一个字符</span></span><br><span class="line"> </span><br><span class="line">                        pCode = tCode[j*<span class="number">6</span>:j*<span class="number">6</span>+<span class="number">6</span>]</span><br><span class="line"> </span><br><span class="line">                        rp = rp + charTable[int(pCode,<span class="number">2</span>)]</span><br><span class="line"> </span><br><span class="line">                <span class="comment">#处理补全的00字符</span></span><br><span class="line"> </span><br><span class="line">                result = rp[:len(rp)-lackCharNums]</span><br><span class="line"> </span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(lackCharNums) :</span><br><span class="line"> </span><br><span class="line">                        result = result + <span class="string">'='</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> bytes(result,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myBase64Decode</span><span class="params">(encodedBin)</span> :</span></span><br><span class="line"> </span><br><span class="line">        charTable = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'</span> <span class="comment">#字符表</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">        <span class="comment">#如果字符不是4的倍数 返回空</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> len(encodedBin)%<span class="number">4</span> == <span class="number">0</span> :</span><br><span class="line"> </span><br><span class="line">                <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">        tCode = <span class="string">''</span> <span class="comment">#用于存放最终的二进制文本字符串</span></span><br><span class="line"> </span><br><span class="line">        pCpde = <span class="string">''</span> <span class="comment">#暂存变量</span></span><br><span class="line"> </span><br><span class="line">        <span class="comment">#遍历encodedBin每一个字符</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> encodedBin :</span><br><span class="line"> </span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(len(charTable)) : <span class="comment">#找到表中对应坐标</span></span><br><span class="line"> </span><br><span class="line">                        <span class="keyword">if</span> chr(i) == charTable[j] :</span><br><span class="line"> </span><br><span class="line">                                pCode = bin(j)[<span class="number">2</span>:]  <span class="comment">#转二进制去除开头的0b</span></span><br><span class="line"> </span><br><span class="line">                                lackZeroNums = <span class="number">6</span>-len(pCode) <span class="comment">#省略的0的个数</span></span><br><span class="line"> </span><br><span class="line">                                <span class="keyword">for</span> x <span class="keyword">in</span> range(lackZeroNums) :</span><br><span class="line"> </span><br><span class="line">                                        pCode = <span class="string">'0'</span>+pCode</span><br><span class="line"> </span><br><span class="line">                                tCode = tCode + pCode</span><br><span class="line"> </span><br><span class="line">        pCode = <span class="string">''</span></span><br><span class="line"> </span><br><span class="line">        result = <span class="string">''</span> <span class="comment">#储存最终结果</span></span><br><span class="line"> </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(int(len(tCode)/<span class="number">8</span>)) :</span><br><span class="line"> </span><br><span class="line">                pCode = tCode[i*<span class="number">8</span>:i*<span class="number">8</span>+<span class="number">8</span>]</span><br><span class="line"> </span><br><span class="line">                result = result + chr(int(pCode,<span class="number">2</span>))</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> bytes(result,encoding=<span class="string">"utf-8"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>by <a href="https://www.cnblogs.com/ichunqiu/p/10038813.html" target="_blank" rel="noopener">i春秋学院的博客</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/08/03/Xman_day3/" rel="next" title="Xman_day3 re">
+                  <i class="fa fa-chevron-left"></i> Xman_day3 re
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/08/09/wooyun知识库/" rel="prev" title="搭建wooyun知识库">
+                  搭建wooyun知识库 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    <div class="comments" id="comments"></div>
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Base64"><span class="nav-number">1.</span> <span class="nav-text">Base64</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编码规则"><span class="nav-number">1.2.</span> <span class="nav-text">编码规则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Base32"><span class="nav-number">2.</span> <span class="nav-text">Base32</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编码规则-1"><span class="nav-number">2.1.</span> <span class="nav-text">编码规则</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#脚本"><span class="nav-number">3.</span> <span class="nav-text">脚本</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">entranquil</p>
+  <div class="site-description" itemprop="description">From zero to zero day.</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+        
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+        
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+        
+      </div>
+    
+  </nav>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Friends
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.jagger2zr.com/" title="http://www.jagger2zr.com/" rel="noopener" target="_blank">jagger</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://lemonvegetablefish.github.io/" title="https://lemonvegetablefish.github.io/" rel="noopener" target="_blank">LVF</a>
+        </li>
+      
+        <li class="links-of-blogroll-item">
+          <a href="https://fitzbc.github.io/" title="https://fitzbc.github.io/" rel="noopener" target="_blank">fitzbc</a>
+        </li>
+      
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">entranquil</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.3.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.3.0"></script><script src="/js/motion.js?v=7.3.0"></script>
+<script src="/js/schemes/pisces.js?v=7.3.0"></script>
+
+<script src="/js/next-boot.js?v=7.3.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.3.0"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'zPBxoDHjfriy4FO43ysmpu4P-gzGzoHsz',
+    appKey: 'L1WzWXACrIrcyGj60A3Crnfj',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-cn' || 'zh-cn',
+    path: location.pathname
+  });
+}, window.Valine);
+</script>
+
+</body>
+</html>
